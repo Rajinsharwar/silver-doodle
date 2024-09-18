@@ -21,22 +21,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Download the ZIP file from the provided URL
+      # Step 2: Remove the existing content (plugins, themes, mu-plugins) from the repository
+      - name: Remove existing wp-content directories
+        run: |
+          rm -rf plugins
+          rm -rf themes
+          rm -rf mu-plugins
+
+      # Step 3: Download the ZIP file from the provided URL
       - name: Download ZIP file
         run: |
           curl -O ${{ github.event.inputs.file_url }}
 
-      # Step 3: Extract the downloaded ZIP file, overwrite without prompts
+      # Step 4: Extract the downloaded ZIP file, overwrite without prompts
       - name: Extract ZIP file
         run: |
           7z x ${{ github.event.inputs.file_name }} -y
 
-      # Step 4: Remove the ZIP file after extraction
+      # Step 5: Remove the ZIP file after extraction
       - name: Remove ZIP file
         run: |
           rm -f ${{ github.event.inputs.file_name }}
 
-      # Step 5: Commit and push the extracted files
+      # Step 6: Commit and push the extracted files, including removals
       - name: Commit changes
         run: |
           git config --global user.name "GitHub Action"

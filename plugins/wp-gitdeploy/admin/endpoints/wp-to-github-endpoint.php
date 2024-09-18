@@ -17,6 +17,7 @@ add_action('rest_api_init', function () {
 function wp_gitdeploy_push_completed_permission_callback( $request ) {
 
     if ( 1 !== get_option( 'wp_gitdeploy_resync_in_progress' ) ) {
+		update_option( 'am_i_debuggging', 'Am gone' );
         return false;
     }
 
@@ -24,8 +25,6 @@ function wp_gitdeploy_push_completed_permission_callback( $request ) {
     $file_name = $request->get_param( 'file_name' );
     $zip_file = WP_GITDEPLOY_RESYNC_DIR . $file_name;
     $action_id = $request->get_param( 'action_id' );
-	
-	update_option( 'am_i_debuggging', $file_name );
 
     // Perform a basic check to see if file_name is provided
     if ( ! empty( $file_name ) ) {

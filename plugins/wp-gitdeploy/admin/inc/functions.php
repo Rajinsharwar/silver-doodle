@@ -324,10 +324,10 @@ function wp_gitdeploy_resync_action() {
  */
 function wp_gitdeploy_is_github_action_running( $run_id, $zip_file ) {
     $creds = get_option( 'wp_gitdeploy_creds', array() );
-    $token = $this->creds['wp_gitdeploy_token'] ?? '';
-    $repo = $this->creds['wp_gitdeploy_repo'] ?? '';
-    $username = $this->creds['wp_gitdeploy_username'] ?? '';
-    $branch = $this->creds['wp_gitdeploy_repo_branch'] ?? 'main';
+    $token = $creds['wp_gitdeploy_token'] ?? '';
+    $repo = $creds['wp_gitdeploy_repo'] ?? '';
+    $username = $creds['wp_gitdeploy_username'] ?? '';
+    $branch = $creds['wp_gitdeploy_repo_branch'] ?? 'main';
 
     $api_url = "https://api.github.com/repos/$username/$repo/actions/runs/$run_id";
 

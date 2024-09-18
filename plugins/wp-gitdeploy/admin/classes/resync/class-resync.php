@@ -95,7 +95,7 @@ class WP_GitDeploy_Resync {
             );
             return false;
         } else {
-            update_option( 'wp_gitdeploy_resync_in_progress', true, false );
+            update_option( 'wp_gitdeploy_resync_in_progress', 'yes', false );
             // $this->status = 'Success';
             // $deployment_log = new WP_GitDeploy_Deployments( $this->status, 
             //     __( 'WP -> GitHub' ),

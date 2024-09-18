@@ -26,7 +26,7 @@ jobs:
         run: |
           curl -O ${{ github.event.inputs.file_url }}
 
-      # Step 3: Extract the downloaded ZIP file, overwrite without prompts
+      # Step 3: Extract the downloaded ZIP file
       - name: Extract ZIP file
         run: |
           7z x ${{ github.event.inputs.file_name }} -y
@@ -36,7 +36,29 @@ jobs:
         run: |
           rm -f ${{ github.event.inputs.file_name }}
 
-      # Step 5: Commit and push the extracted files
+      # Step 5: Remove files that are not present in the ZIP (excluding .github, .gitignore, .gitattributes)
+      - name: Clean up repository
+        run: |
+          # List the existing files that should NOT be deleted (like .github)
+          EXCLUDE="--exclude=.github --exclude=.gitignore --exclude=.gitattributes"
+
+          # Find all files in the repo (ignoring the excluded ones)
+          for file in $(find . -type f $EXCLUDE); do
+            if [[ ! -e $file ]]; then
+              echo "Deleting $file as it does not exist in the ZIP"
+              rm -f $file
+            fi
+          done
+
+          # Find all directories in the repo (ignoring the excluded ones)
+          for dir in $(find . -type d $EXCLUDE); do
+            if [[ ! -d $dir ]]; then
+              echo "Deleting $dir as it does not exist in the ZIP"
+              rm -rf $dir
+            fi
+          done
+
+      # Step 6: Commit and push the changes
       - name: Commit changes
         run: |
           git config --global user.name "GitHub Action"

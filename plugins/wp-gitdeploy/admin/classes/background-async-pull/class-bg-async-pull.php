@@ -165,7 +165,7 @@ class WP_GitDeploy_Async extends WP_Async_Request {
     protected function move_files_to_root( $source_dir, $target_dir ) {
         $files = scandir( $source_dir );
 
-        if ( ! $false ) {
+        if ( ! $files ) {
             $this->status = 'Failed';
             $this->reason = __( 'Couldn\'t scan Repo Data after downloading.', 'wp-gitdeploy' );
             return;

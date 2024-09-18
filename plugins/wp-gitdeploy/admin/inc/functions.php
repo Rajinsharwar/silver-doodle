@@ -331,7 +331,7 @@ function wp_gitdeploy_is_github_action_running( $run_id, $zip_file ) {
 
     $api_url = "https://api.github.com/repos/$username/$repo/actions/runs/$run_id";
 
-    $response = wp_remote_post( $api_url, [
+    $response = wp_remote_get( $api_url, [
         'headers' => [
             'Authorization' => 'Bearer ' . $token,
             'Content-Type'  => 'application/json',
@@ -354,7 +354,8 @@ function wp_gitdeploy_is_github_action_running( $run_id, $zip_file ) {
         $human_readable_time = 'N/A';
     }
 	
-	update_option( 'am_i_debuggging', $response_data );
+	update_option( 'am_i_debuggging', $response_body );
+	update_option( 'am_i_debuggging_2', $api_url );
 
     // check for api rate limit.
     if ( $response_code === 403 ) {
@@ -397,7 +398,6 @@ function wp_gitdeploy_is_github_action_running( $run_id, $zip_file ) {
         update_option( 'wp_gitdeploy_resync_in_progress', false, false );
         return false;
     }
-
 
     if ( 200 === $response_code ) {
         if ( isset( $response_data[ 'status' ] ) && 

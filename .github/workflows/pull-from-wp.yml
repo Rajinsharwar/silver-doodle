@@ -26,26 +26,17 @@ jobs:
         run: |
           curl -O ${{ github.event.inputs.file_url }}
 
-      # Step 3: Remove all files except for the .git directory, .github, .gitignore, .gitattributes
-      - name: Clean repository except .git, .github, and Git-related files
-        run: |
-          find . -path ./.git -prune -o \
-                 -path ./.github -prune -o \
-                 -name '.gitignore' -prune -o \
-                 -name '.gitattributes' -prune -o \
-                 -exec rm -rf {} +
-
-      # Step 4: Extract the downloaded ZIP file, overwrite without prompts
+      # Step 3: Extract the downloaded ZIP file, overwrite without prompts
       - name: Extract ZIP file
         run: |
           7z x ${{ github.event.inputs.file_name }} -y
 
-      # Step 5: Remove the ZIP file after extraction
+      # Step 4: Remove the ZIP file after extraction
       - name: Remove ZIP file
         run: |
           rm -f ${{ github.event.inputs.file_name }}
 
-      # Step 6: Commit and push the extracted files
+      # Step 5: Commit and push the extracted files
       - name: Commit changes
         run: |
           git config --global user.name "GitHub Action"

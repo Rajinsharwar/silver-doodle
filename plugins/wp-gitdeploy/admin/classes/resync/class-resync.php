@@ -96,16 +96,16 @@ class WP_GitDeploy_Resync {
             return false;
         } else {
             update_option( 'wp_gitdeploy_resync_in_progress', true, false );
-            $this->status = 'Success';
-            $deployment_log = new WP_GitDeploy_Deployments( $this->status, 
-                __( 'WP -> GitHub' ),
-                sprintf(
-                    __( '<br> API Limit Cap: %d. <br> API Rate used: %d. <br> API Limit will reset at: %s', 'wp-gitdeploy' ),
-                    $limit_cap,
-                    $rate_used,
-                    $human_readable_time
-                )
-            );
+            // $this->status = 'Success';
+            // $deployment_log = new WP_GitDeploy_Deployments( $this->status, 
+            //     __( 'WP -> GitHub' ),
+            //     sprintf(
+            //         __( '<br> API Limit Cap: %d. <br> API Rate used: %d. <br> API Limit will reset at: %s', 'wp-gitdeploy' ),
+            //         $limit_cap,
+            //         $rate_used,
+            //         $human_readable_time
+            //     )
+            // );
             return true;
         }
     }

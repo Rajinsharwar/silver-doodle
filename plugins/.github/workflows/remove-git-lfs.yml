@@ -1,0 +1,37 @@
+name: Delete Git LFS Data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  remove-lfs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        lfs: true # Ensure we checkout LFS tracked files
+
+    - name: List LFS files (Optional)
+      run: |
+        git lfs ls-files
+
+    - name: Remove Git LFS tracking
+      run: |
+        git lfs uninstall || echo "Git LFS is not installed or in use"
+        git lfs ls-files -n | xargs -r git rm --cached # Untrack all LFS files from git if they exist
+        rm -rf .git/lfs/objects || echo "No LFS objects folder exists"
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Remove Git LFS files from repository" || echo "Nothing to commit"
+        git push origin HEAD
+
+    - name: Prune LFS and remove files from remote
+      run: |
+        git lfs prune || echo "No LFS objects to prune"
+        git reflog expire --expire=now --all
+        git gc --prune=now --aggressive

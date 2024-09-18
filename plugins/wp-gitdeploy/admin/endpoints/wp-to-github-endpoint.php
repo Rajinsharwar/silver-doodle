@@ -24,8 +24,6 @@ function wp_gitdeploy_push_completed_permission_callback( $request ) {
     $file_name = $request->get_param( 'file_name' );
     $zip_file = WP_GITDEPLOY_RESYNC_DIR . $file_name;
     $action_id = $request->get_param( 'action_id' );
-	
-	update_option( 'am_i_debuggging', $zip_file );
 
     // Perform a basic check to see if file_name is provided
     if ( ! empty( $file_name ) ) {

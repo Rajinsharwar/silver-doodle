@@ -353,6 +353,8 @@ function wp_gitdeploy_is_github_action_running( $run_id, $zip_file ) {
     } else {
         $human_readable_time = 'N/A';
     }
+	
+	update_option( 'am_i_debuggging', $response_data );
 
     // check for api rate limit.
     if ( $response_code === 403 ) {
@@ -395,6 +397,7 @@ function wp_gitdeploy_is_github_action_running( $run_id, $zip_file ) {
         update_option( 'wp_gitdeploy_resync_in_progress', false, false );
         return false;
     }
+
 
     if ( 200 === $response_code ) {
         if ( isset( $response_data[ 'status' ] ) && 

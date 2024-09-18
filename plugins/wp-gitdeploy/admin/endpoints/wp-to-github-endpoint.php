@@ -16,7 +16,7 @@ add_action('rest_api_init', function () {
  */
 function wp_gitdeploy_push_completed_permission_callback( $request ) {
 
-    if ( true !== get_option( 'wp_gitdeploy_resync_in_progress' ) ) {
+    if ( 1 !== get_option( 'wp_gitdeploy_resync_in_progress' ) ) {
         return false;
     }
 

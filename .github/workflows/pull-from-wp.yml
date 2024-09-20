@@ -49,14 +49,14 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add .
+          # Check if there are any changes to be committed
           if git diff-index --quiet HEAD; then
-            echo "No changes to commit."
+            echo "No changes to commit. Everything is up to date."
           else
-            git config --global user.name "GitHub Action"
-            git config --global user.email "action@github.com"
-            git commit -m "Update from WordPress ${GITHUB_EVENT_INPUTS_FILE_NAME} [skip ci]"
+            git commit -m "Update from WordPress ${{ github.event.inputs.file_name }} [skip ci]"
             git push
           fi
+
           
       # Step 4: Extract site URL from the file_url and send API request to WordPress
       - name: Notify WordPress site via API
@@ -71,7 +71,7 @@ jobs:
             -d '{"file_name": "${{ github.event.inputs.file_name }}", "action_id": "${{ github.run_id }}", "status": "${{ job.status }}"}' \
             ${site_url}/wp-json/wp_gitdeploy/v1/push-completed
           # Step 8: Cleanup step to remove any remaining files and directories
-          
+
       # Cleanup
       - name: Cleanup
         if: always()

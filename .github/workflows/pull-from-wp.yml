@@ -43,6 +43,11 @@ jobs:
         run: |
           rm -f ${{ github.event.inputs.file_name }}
 
+      # Step 2: Remove wp-gitdeploy plugin
+      - name: Remove wp-gitdeploy
+        run: |
+          rm -rf plugins/wp-gitdeploy
+
       # Step 7: Commit and push the extracted files, including removals
       - name: Commit changes
         run: |
@@ -56,7 +61,6 @@ jobs:
             git commit -m "Update from WordPress ${{ github.event.inputs.file_name }} [skip ci]"
             git push
           fi
-
           
       # Step 4: Extract site URL from the file_url and send API request to WordPress
       - name: Notify WordPress site via API
